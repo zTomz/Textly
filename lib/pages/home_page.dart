@@ -78,16 +78,16 @@ class _HomePageState extends State<HomePage> {
                       });
 
                       //! Calculate sentece starts
+                      sentenceStarts = [];
+
                       int _spacesAfterPoint = 0;
                       List<String> _newWord = [];
+                      String _letterBefore = "";
 
                       text.split("").forEach((letter) {
                         if (letter == ".") {
-                          if (_newWord.isNotEmpty && _newWord.any((element) => element == ".")) {
-                            _newWord.remove(".");
-                            sentenceStarts.add(_newWord);
-                          }
-                          _newWord.clear();
+                          sentenceStarts.add(_newWord);
+                          _newWord = [];
                           _spacesAfterPoint = 0;
                         }
 
@@ -95,10 +95,22 @@ class _HomePageState extends State<HomePage> {
                           _spacesAfterPoint += 1;
                         }
 
-                        if (_spacesAfterPoint < 2 && letter != " ") {
-                          _newWord.add(letter);
-                          print("New Word: $_newWord");
+                        if (_spacesAfterPoint == 0 && _letterBefore == ".") {
+                          _spacesAfterPoint += 1;
                         }
+
+                        if (_spacesAfterPoint == 0 && _letterBefore == "") {
+                          _spacesAfterPoint += 1;
+                        }
+
+                        if (letter != "." &&
+                            _spacesAfterPoint <= 1 &&
+                            letter != " ") {
+                          _newWord.add(letter);
+                          print("New word: $_newWord");
+                        }
+
+                        _letterBefore = letter;
                       });
 
                       print("Sentence Starts: $sentenceStarts");
