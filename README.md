@@ -1,16 +1,5 @@
-# textly
+# Textly
 
-A new Flutter project.
+Textly is an app wich analyses your text. This means words and letters but also how often do you use a specific letter in the text and wich wich words your sentences start.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+If you have more ideas or a design propocition, please tell me.
