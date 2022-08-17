@@ -81,13 +81,14 @@ class _HomePageState extends State<HomePage> {
                       sentenceStarts = [];
 
                       int _spacesAfterPoint = 0;
-                      List<String> _newWord = [];
+                      String _newWord = "";
                       String _letterBefore = "";
+                      List<String> _countStartWordsList = [];
 
                       text.split("").forEach((letter) {
-                        if (letter == ".") {
-                          sentenceStarts.add(_newWord);
-                          _newWord = [];
+                        if (letter == "." || letter == "?" || letter == "!") {
+                          _countStartWordsList.add(_newWord);
+                          _newWord = "";
                           _spacesAfterPoint = 0;
                         }
 
@@ -95,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                           _spacesAfterPoint += 1;
                         }
 
-                        if (_spacesAfterPoint == 0 && _letterBefore == ".") {
+                        if (_spacesAfterPoint == 0 && _letterBefore == "." && letter != "?" && letter != "!") {
                           _spacesAfterPoint += 1;
                         }
 
@@ -103,14 +104,38 @@ class _HomePageState extends State<HomePage> {
                           _spacesAfterPoint += 1;
                         }
 
-                        if (letter != "." &&
+                        if (letter != "." && letter != "?" && letter != "!" &&
                             _spacesAfterPoint <= 1 &&
                             letter != " ") {
-                          _newWord.add(letter);
+                          _newWord += letter;
                           print("New word: $_newWord");
                         }
 
                         _letterBefore = letter;
+                      });
+
+                      print("Sentence Starts: $_countStartWordsList");
+
+                      _countStartWordsList.sort();
+                      print("Sentence Starts: $_countStartWordsList");
+
+                      _countStartWordsList.forEach((sortWord) {
+                        bool run = true;
+
+                        sentenceStarts.forEach((word) {
+                          if (sortWord == word[0]) {
+                            setState(() {
+                              word[1] = word[1] + 1;
+                            });
+                            run = false;
+                          }
+                        });
+
+                        if (run) {
+                          setState(() {
+                            sentenceStarts.add([sortWord, 1]);
+                          });
+                        }
                       });
 
                       print("Sentence Starts: $sentenceStarts");
