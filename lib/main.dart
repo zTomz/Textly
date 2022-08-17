@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:textly/pages/home_page.dart';
 
@@ -16,9 +18,47 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+        primaryColor: const Color(0xFFF5F5F5),
+        accentColor: const Color(0xFFCCCCCC),
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            color: Color(0xFF111717),
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+          ),
+          bodyText1: TextStyle(
+            color: Color(0xFF3D3D3D),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+          bodyText2: TextStyle(
+            color: Color(0xFF111717),
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       darkTheme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF0A0A0A),
+        scaffoldBackgroundColor: const Color(0xFF1A2223),
+        primaryColor: const Color(0xFF171C1F),
+        accentColor: const Color(0xFF000000),
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+            color: Color(0xFFFFFFFF),
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+          ),
+          bodyText1: TextStyle(
+            color: Color(0xFFCCCCCC),
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+          ),
+          bodyText2: TextStyle(
+            color: Color(0xFFFFFFFF),
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       home: const HomePage(),
     );

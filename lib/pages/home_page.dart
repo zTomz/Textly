@@ -1,7 +1,6 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_function_literals_in_foreach_calls
+// ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_function_literals_in_foreach_calls, deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:textly/data.dart';
 import 'package:textly/widgets/detail_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -28,13 +28,23 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               Container(
-                width: size.width * 0.925,
+                margin: const EdgeInsets.only(top: 40, bottom: 15),
+                width: size.width * 0.85,
+                child: Text("Textly", style: theme.textTheme.headline1),
+              ),
+              Container(
+                width: size.width * 0.85,
                 height: size.height * 0.275,
-                margin: const EdgeInsets.only(top: 70),
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: GOLD,
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme.accentColor,
+                      offset: const Offset(9, 9),
+                    ),
+                  ],
+                  border: Border.all(width: 9, color: theme.accentColor),
+                  color: theme.primaryColor,
                 ),
                 child: Center(
                   child: TextField(
@@ -96,7 +106,10 @@ class _HomePageState extends State<HomePage> {
                           _spacesAfterPoint += 1;
                         }
 
-                        if (_spacesAfterPoint == 0 && _letterBefore == "." && letter != "?" && letter != "!") {
+                        if (_spacesAfterPoint == 0 &&
+                            _letterBefore == "." &&
+                            letter != "?" &&
+                            letter != "!") {
                           _spacesAfterPoint += 1;
                         }
 
@@ -104,20 +117,18 @@ class _HomePageState extends State<HomePage> {
                           _spacesAfterPoint += 1;
                         }
 
-                        if (letter != "." && letter != "?" && letter != "!" &&
+                        if (letter != "." &&
+                            letter != "?" &&
+                            letter != "!" &&
                             _spacesAfterPoint <= 1 &&
                             letter != " ") {
                           _newWord += letter;
-                          print("New word: $_newWord");
                         }
 
                         _letterBefore = letter;
                       });
 
-                      print("Sentence Starts: $_countStartWordsList");
-
                       _countStartWordsList.sort();
-                      print("Sentence Starts: $_countStartWordsList");
 
                       _countStartWordsList.forEach((sortWord) {
                         bool run = true;
@@ -137,94 +148,186 @@ class _HomePageState extends State<HomePage> {
                           });
                         }
                       });
-
-                      print("Sentence Starts: $sentenceStarts");
                     },
                     controller: textController,
                     maxLines: 9,
-                    decoration: const InputDecoration(
+                    style: theme.textTheme.bodyText2!
+                        .copyWith(fontWeight: FontWeight.w400),
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Your text here...",
+                      hintStyle: theme.textTheme.bodyText1,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 25),
-              DetailWidget(
-                count: words.toString(),
-                title: "Words",
-              ),
-              DetailWidget(
-                count: textController.text.length.toString(),
-                title: "Letters",
-              ),
-              const SizedBox(height: 10),
-              Container(
-                height: 300,
-                width: size.width * 0.925,
-                decoration: BoxDecoration(
-                  color: GOLD,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: letters
-                        .map(
-                          (value) => Container(
-                            height: 60,
-                            margin: const EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(90),
-                              border: Border.all(
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                                width: 6,
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: (size.width * 0.925 - 20) * 0.25,
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        width: 6,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      value[0],
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                    child: Center(
-                                  child: Center(
-                                    child: Text(
-                                      value[1].toString(),
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ))
-                              ],
-                            ),
-                          ),
-                        )
-                        .toList(),
+              if (textController.text == "")
+                Container(
+                  margin: const EdgeInsets.only(top: 200),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Type some text",
+                            style: theme.textTheme.headline1),
+                        Text("to get informations!",
+                            style: theme.textTheme.headline1),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 90),
+              if (textController.text != "") const SizedBox(height: 25),
+              if (textController.text != "")
+                DetailWidget(
+                  count: words.toString(),
+                  title: "Words",
+                ),
+              if (textController.text != "")
+                DetailWidget(
+                  count: textController.text.length.toString(),
+                  title: "Letters",
+                ),
+              if (textController.text != "") const SizedBox(height: 20),
+              if (textController.text != "")
+                Container(
+                  height: 300,
+                  width: size.width * 0.85,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.accentColor,
+                        offset: const Offset(9, 9),
+                      ),
+                    ],
+                    border: Border.all(width: 9, color: theme.accentColor),
+                    color: theme.primaryColor,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: letters
+                          .map(
+                            (value) => Container(
+                              height: 60,
+                              margin: const EdgeInsets.only(
+                                  top: 20, left: 10, right: 20),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.accentColor,
+                                    offset: const Offset(9, 9),
+                                  ),
+                                ],
+                                border: Border.all(
+                                    width: 9, color: theme.accentColor),
+                                color: theme.primaryColor,
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: size.width * 0.85 * 0.3,
+                                    height: 70,
+                                    child: Center(
+                                      child: Text(
+                                        value[1].toString(),
+                                        style: theme.textTheme.bodyText2,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 10,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: theme.accentColor,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Center(
+                                      child: Text(
+                                        value[0].toString(),
+                                        style: theme.textTheme.bodyText2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+              if (textController.text != "") const SizedBox(height: 20),
+              if (textController.text != "")
+                Container(
+                  height: 300,
+                  width: size.width * 0.85,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: theme.accentColor,
+                        offset: const Offset(9, 9),
+                      ),
+                    ],
+                    border: Border.all(width: 9, color: theme.accentColor),
+                    color: theme.primaryColor,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: sentenceStarts
+                          .map(
+                            (value) => Container(
+                              height: 60,
+                              margin: const EdgeInsets.only(
+                                  top: 20, left: 10, right: 20),
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.accentColor,
+                                    offset: const Offset(9, 9),
+                                  ),
+                                ],
+                                border: Border.all(
+                                    width: 9, color: theme.accentColor),
+                                color: theme.primaryColor,
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: size.width * 0.85 * 0.3,
+                                    height: 70,
+                                    child: Center(
+                                      child: Text(
+                                        value[1].toString(),
+                                        style: theme.textTheme.bodyText2,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 10,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: theme.accentColor,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Center(
+                                      child: Text(
+                                        value[0].toString(),
+                                        style: theme.textTheme.bodyText2,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+              if (textController.text != "") const SizedBox(height: 90),
             ],
           ),
         ),
