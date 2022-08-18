@@ -47,117 +47,158 @@ class _HomePageState extends State<HomePage> {
                   color: theme.primaryColor,
                 ),
                 child: Center(
-                  child: TextField(
-                    onChanged: (String text) {
-                      //! Calculate words
-                      List<String> _words = text.split(" ");
+                  child: Stack(
+                    children: [
+                      TextField(
+                        onChanged: (String text) {
+                          //! Calculate words
+                          List<String> _words = text.split(" ");
 
-                      while (_words.remove("")) {
-                        _words.remove("");
-                      }
-
-                      setState(() {
-                        words = _words.length + 1;
-                      });
-                      //! Calculate words
-
-                      //! Calculate letters
-                      List<String> _letters = text.split("");
-                      List<String> _sortedLetters = _letters;
-                      _sortedLetters.sort();
-
-                      letters = [];
-
-                      _sortedLetters.forEach((letter) {
-                        bool run = true;
-
-                        letters.forEach((letterList) {
-                          if (letter == letterList[0]) {
-                            setState(() {
-                              letterList[1] = letterList[1] + 1;
-                            });
-                            run = false;
+                          while (_words.remove("")) {
+                            _words.remove("");
                           }
-                        });
 
-                        if (run) {
                           setState(() {
-                            letters.add([letter, 1]);
+                            words = _words.length;
                           });
-                        }
-                      });
+                          //! Calculate words
 
-                      //! Calculate sentece starts
-                      sentenceStarts = [];
+                          //! Calculate letters
+                          List<String> _letters = text.split("");
+                          List<String> _sortedLetters = _letters;
+                          _sortedLetters.sort();
 
-                      int _spacesAfterPoint = 0;
-                      String _newWord = "";
-                      String _letterBefore = "";
-                      List<String> _countStartWordsList = [];
+                          letters = [];
 
-                      text.split("").forEach((letter) {
-                        if (letter == "." || letter == "?" || letter == "!") {
-                          _countStartWordsList.add(_newWord);
-                          _newWord = "";
-                          _spacesAfterPoint = 0;
-                        }
+                          _sortedLetters.forEach((letter) {
+                            bool run = true;
 
-                        if (letter == " ") {
-                          _spacesAfterPoint += 1;
-                        }
-
-                        if (_spacesAfterPoint == 0 &&
-                            _letterBefore == "." &&
-                            letter != "?" &&
-                            letter != "!") {
-                          _spacesAfterPoint += 1;
-                        }
-
-                        if (_spacesAfterPoint == 0 && _letterBefore == "") {
-                          _spacesAfterPoint += 1;
-                        }
-
-                        if (letter != "." &&
-                            letter != "?" &&
-                            letter != "!" &&
-                            _spacesAfterPoint <= 1 &&
-                            letter != " ") {
-                          _newWord += letter;
-                        }
-
-                        _letterBefore = letter;
-                      });
-
-                      _countStartWordsList.sort();
-
-                      _countStartWordsList.forEach((sortWord) {
-                        bool run = true;
-
-                        sentenceStarts.forEach((word) {
-                          if (sortWord == word[0]) {
-                            setState(() {
-                              word[1] = word[1] + 1;
+                            letters.forEach((letterList) {
+                              if (letter == letterList[0]) {
+                                setState(() {
+                                  letterList[1] = letterList[1] + 1;
+                                });
+                                run = false;
+                              }
                             });
-                            run = false;
-                          }
-                        });
 
-                        if (run) {
-                          setState(() {
-                            sentenceStarts.add([sortWord, 1]);
+                            if (run) {
+                              setState(() {
+                                letters.add([letter, 1]);
+                              });
+                            }
                           });
-                        }
-                      });
-                    },
-                    controller: textController,
-                    maxLines: 9,
-                    style: theme.textTheme.bodyText2!
-                        .copyWith(fontWeight: FontWeight.w400),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Your text here...",
-                      hintStyle: theme.textTheme.bodyText1,
-                    ),
+
+                          //! Calculate sentece starts
+                          sentenceStarts = [];
+
+                          int _spacesAfterPoint = 0;
+                          String _newWord = "";
+                          String _letterBefore = "";
+                          List<String> _countStartWordsList = [];
+
+                          text.split("").forEach((letter) {
+                            if (letter == "." ||
+                                letter == "?" ||
+                                letter == "!") {
+                              _countStartWordsList.add(_newWord);
+                              _newWord = "";
+                              _spacesAfterPoint = 0;
+                            }
+
+                            if (letter == " ") {
+                              _spacesAfterPoint += 1;
+                            }
+
+                            if (_spacesAfterPoint == 0 &&
+                                _letterBefore == "." &&
+                                letter != "?" &&
+                                letter != "!") {
+                              _spacesAfterPoint += 1;
+                            }
+
+                            if (_spacesAfterPoint == 0 && _letterBefore == "") {
+                              _spacesAfterPoint += 1;
+                            }
+
+                            if (letter != "." &&
+                                letter != "?" &&
+                                letter != "!" &&
+                                _spacesAfterPoint <= 1 &&
+                                letter != " ") {
+                              _newWord += letter;
+                            }
+
+                            _letterBefore = letter;
+                          });
+
+                          _countStartWordsList.sort();
+
+                          _countStartWordsList.forEach((sortWord) {
+                            bool run = true;
+
+                            sentenceStarts.forEach((word) {
+                              if (sortWord == word[0]) {
+                                setState(() {
+                                  word[1] = word[1] + 1;
+                                });
+                                run = false;
+                              }
+                            });
+
+                            if (run) {
+                              setState(() {
+                                sentenceStarts.add([sortWord, 1]);
+                              });
+                            }
+                          });
+                        },
+                        controller: textController,
+                        maxLines: 9,
+                        style: theme.textTheme.bodyText2!
+                            .copyWith(fontWeight: FontWeight.w400),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Your text here...",
+                          hintStyle: theme.textTheme.bodyText1,
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 12,
+                        right: 4,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              textController.text = "";
+                            });
+                          },
+                          child: Tooltip(
+                            message: "Clear text",
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.accentColor,
+                                    offset: const Offset(4, 4),
+                                  ),
+                                ],
+                                border:
+                                    Border.all(width: 4, color: theme.accentColor),
+                                color: theme.primaryColor,
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.delete,
+                                  color: theme.accentColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -170,7 +211,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Text("Type some text",
                             style: theme.textTheme.headline1),
-                        Text("to get informations!",
+                        Text("to get information!",
                             style: theme.textTheme.headline1),
                       ],
                     ),
@@ -204,56 +245,71 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: SingleChildScrollView(
                     child: Column(
-                      children: letters
-                          .map(
-                            (value) => Container(
-                              height: 60,
-                              margin: const EdgeInsets.only(
-                                  top: 20, left: 10, right: 20),
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: theme.accentColor,
-                                    offset: const Offset(9, 9),
-                                  ),
-                                ],
-                                border: Border.all(
-                                    width: 9, color: theme.accentColor),
-                                color: theme.primaryColor,
-                              ),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: size.width * 0.85 * 0.3,
-                                    height: 70,
-                                    child: Center(
-                                      child: Text(
-                                        value[1].toString(),
-                                        style: theme.textTheme.bodyText2,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 13, top: 10),
+                          child: Row(
+                            children: [
+                              Text("Letters",
+                                  style: theme.textTheme.headline1!
+                                      .copyWith(fontSize: 24)),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: letters
+                              .map(
+                                (value) => Container(
+                                  height: 60,
+                                  margin: const EdgeInsets.only(
+                                      top: 10, bottom: 10, left: 10, right: 20),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: theme.accentColor,
+                                        offset: const Offset(9, 9),
                                       ),
-                                    ),
+                                    ],
+                                    border: Border.all(
+                                        width: 9, color: theme.accentColor),
+                                    color: theme.primaryColor,
                                   ),
-                                  Container(
-                                    width: 10,
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                      color: theme.accentColor,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Center(
-                                      child: Text(
-                                        value[0].toString(),
-                                        style: theme.textTheme.bodyText2,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.85 * 0.3,
+                                        height: 70,
+                                        child: Center(
+                                          child: Text(
+                                            value[1].toString(),
+                                            style: theme.textTheme.bodyText2,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      Container(
+                                        width: 10,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                          color: theme.accentColor,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Center(
+                                          child: Text(
+                                            value[0].toString(),
+                                            style: theme.textTheme.bodyText2,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
-                          .toList(),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
                     ),
                   ),
                 ),
@@ -274,56 +330,71 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: SingleChildScrollView(
                     child: Column(
-                      children: sentenceStarts
-                          .map(
-                            (value) => Container(
-                              height: 60,
-                              margin: const EdgeInsets.only(
-                                  top: 20, left: 10, right: 20),
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: theme.accentColor,
-                                    offset: const Offset(9, 9),
-                                  ),
-                                ],
-                                border: Border.all(
-                                    width: 9, color: theme.accentColor),
-                                color: theme.primaryColor,
-                              ),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: size.width * 0.85 * 0.3,
-                                    height: 70,
-                                    child: Center(
-                                      child: Text(
-                                        value[1].toString(),
-                                        style: theme.textTheme.bodyText2,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 13, top: 10),
+                          child: Row(
+                            children: [
+                              Text("Sentence starts",
+                                  style: theme.textTheme.headline1!
+                                      .copyWith(fontSize: 24)),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          children: letters
+                              .map(
+                                (value) => Container(
+                                  height: 60,
+                                  margin: const EdgeInsets.only(
+                                      top: 10, bottom: 10, left: 10, right: 20),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: theme.accentColor,
+                                        offset: const Offset(9, 9),
                                       ),
-                                    ),
+                                    ],
+                                    border: Border.all(
+                                        width: 9, color: theme.accentColor),
+                                    color: theme.primaryColor,
                                   ),
-                                  Container(
-                                    width: 10,
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                      color: theme.accentColor,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: Center(
-                                      child: Text(
-                                        value[0].toString(),
-                                        style: theme.textTheme.bodyText2,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.85 * 0.3,
+                                        height: 70,
+                                        child: Center(
+                                          child: Text(
+                                            value[1].toString(),
+                                            style: theme.textTheme.bodyText2,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      Container(
+                                        width: 10,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                          color: theme.accentColor,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Center(
+                                          child: Text(
+                                            value[0].toString(),
+                                            style: theme.textTheme.bodyText2,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
-                          .toList(),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
                     ),
                   ),
                 ),
