@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_function_literals_in_foreach_calls, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:textly/widgets/detail_list_view.dart';
 import 'package:textly/widgets/detail_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,8 +14,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController textController = TextEditingController();
 
-  int words = 0;
+  int wordsCount = 0;
   List<List> letters = [];
+  List<List> words = [];
   List<List> sentenceStarts = [];
 
   @override
@@ -52,14 +54,14 @@ class _HomePageState extends State<HomePage> {
                       TextField(
                         onChanged: (String text) {
                           //! Calculate words
-                          List<String> _words = text.split(" ");
+                          List<String> _wordsCount = text.split(" ");
 
-                          while (_words.remove("")) {
-                            _words.remove("");
+                          while (_wordsCount.remove("")) {
+                            _wordsCount.remove("");
                           }
 
                           setState(() {
-                            words = _words.length;
+                            wordsCount = _wordsCount.length;
                           });
                           //! Calculate words
 
@@ -85,6 +87,32 @@ class _HomePageState extends State<HomePage> {
                             if (run) {
                               setState(() {
                                 letters.add([letter, 1]);
+                              });
+                            }
+                          });
+
+                          //! Calculate words
+                          List<String> _words = text.split(" ");
+                          List<String> _sortedWords = _words;
+                          _sortedLetters.sort();
+
+                          words = [];
+
+                          _sortedWords.forEach((word) {
+                            bool run = true;
+
+                            words.forEach((wordsList) {
+                              if (word == wordsList[0]) {
+                                setState(() {
+                                  wordsList[1] = wordsList[1] + 1;
+                                });
+                                run = false;
+                              }
+                            });
+
+                            if (run) {
+                              setState(() {
+                                words.add([word, 1]);
                               });
                             }
                           });
@@ -184,8 +212,8 @@ class _HomePageState extends State<HomePage> {
                                     offset: const Offset(4, 4),
                                   ),
                                 ],
-                                border:
-                                    Border.all(width: 4, color: theme.accentColor),
+                                border: Border.all(
+                                    width: 4, color: theme.accentColor),
                                 color: theme.primaryColor,
                               ),
                               child: Center(
@@ -220,7 +248,7 @@ class _HomePageState extends State<HomePage> {
               if (textController.text != "") const SizedBox(height: 25),
               if (textController.text != "")
                 DetailWidget(
-                  count: words.toString(),
+                  count: wordsCount.toString(),
                   title: "Words",
                 ),
               if (textController.text != "")
@@ -230,174 +258,13 @@ class _HomePageState extends State<HomePage> {
                 ),
               if (textController.text != "") const SizedBox(height: 20),
               if (textController.text != "")
-                Container(
-                  height: 300,
-                  width: size.width * 0.85,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.accentColor,
-                        offset: const Offset(9, 9),
-                      ),
-                    ],
-                    border: Border.all(width: 9, color: theme.accentColor),
-                    color: theme.primaryColor,
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 13, top: 10),
-                          child: Row(
-                            children: [
-                              Text("Letters",
-                                  style: theme.textTheme.headline1!
-                                      .copyWith(fontSize: 24)),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          children: letters
-                              .map(
-                                (value) => Container(
-                                  height: 60,
-                                  margin: const EdgeInsets.only(
-                                      top: 10, bottom: 10, left: 10, right: 20),
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: theme.accentColor,
-                                        offset: const Offset(9, 9),
-                                      ),
-                                    ],
-                                    border: Border.all(
-                                        width: 9, color: theme.accentColor),
-                                    color: theme.primaryColor,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: size.width * 0.85 * 0.3,
-                                        height: 70,
-                                        child: Center(
-                                          child: Text(
-                                            value[1].toString(),
-                                            style: theme.textTheme.bodyText2,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 10,
-                                        height: 70,
-                                        decoration: BoxDecoration(
-                                          color: theme.accentColor,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Center(
-                                          child: Text(
-                                            value[0].toString(),
-                                            style: theme.textTheme.bodyText2,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
+                DetailListView(title: "Letters", list: letters),
               if (textController.text != "") const SizedBox(height: 20),
               if (textController.text != "")
-                Container(
-                  height: 300,
-                  width: size.width * 0.85,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: theme.accentColor,
-                        offset: const Offset(9, 9),
-                      ),
-                    ],
-                    border: Border.all(width: 9, color: theme.accentColor),
-                    color: theme.primaryColor,
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 13, top: 10),
-                          child: Row(
-                            children: [
-                              Text("Sentence starts",
-                                  style: theme.textTheme.headline1!
-                                      .copyWith(fontSize: 24)),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          children: letters
-                              .map(
-                                (value) => Container(
-                                  height: 60,
-                                  margin: const EdgeInsets.only(
-                                      top: 10, bottom: 10, left: 10, right: 20),
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: theme.accentColor,
-                                        offset: const Offset(9, 9),
-                                      ),
-                                    ],
-                                    border: Border.all(
-                                        width: 9, color: theme.accentColor),
-                                    color: theme.primaryColor,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: size.width * 0.85 * 0.3,
-                                        height: 70,
-                                        child: Center(
-                                          child: Text(
-                                            value[1].toString(),
-                                            style: theme.textTheme.bodyText2,
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 10,
-                                        height: 70,
-                                        decoration: BoxDecoration(
-                                          color: theme.accentColor,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Center(
-                                          child: Text(
-                                            value[0].toString(),
-                                            style: theme.textTheme.bodyText2,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
-                ),
+                DetailListView(title: "Words", list: words),
+              if (textController.text != "") const SizedBox(height: 20),
+              if (textController.text != "")
+                DetailListView(title: "Sentence starts", list: sentenceStarts),
               if (textController.text != "") const SizedBox(height: 90),
             ],
           ),
