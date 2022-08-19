@@ -1,9 +1,17 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:textly/model/setting.dart';
 import 'package:textly/pages/home_page.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(SettingAdapter());
+  await Hive.openBox<Setting>("settings");
+
   runApp(const MyApp());
 }
 
