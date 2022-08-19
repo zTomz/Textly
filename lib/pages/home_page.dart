@@ -1,6 +1,10 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_function_literals_in_foreach_calls, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:textly/model/setting.dart';
+import 'package:textly/services/boxes.dart';
+import 'package:textly/settings.dart';
 import 'package:textly/widgets/detail_list_view.dart';
 import 'package:textly/widgets/detail_widget.dart';
 import 'package:textly/widgets/icon_button.dart';
@@ -22,6 +26,9 @@ class _HomePageState extends State<HomePage> {
   List<List> sentenceStarts = [];
 
   bool settingsWindow = false;
+
+  //* To add new settings:
+  // Box settingsBox = Boxes.getSettingsBox();
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +56,10 @@ class _HomePageState extends State<HomePage> {
                             setState(() {
                               settingsWindow = true;
                             });
+                            //* To add new setting:
+                            // settings
+                            //     .forEach((setting) => settingsBox.add(setting));
+                            // settingsBox.clear();
                           },
                         )
                       ],
@@ -86,17 +97,26 @@ class _HomePageState extends State<HomePage> {
                               //! Calculate words
 
                               //! Calculate letters
-                              List<String> _letters = text
-                                  .toLowerCase()
-                                  .replaceAll(" ", "")
-                                  .split("");
+                              String _text = text;
 
-                              List<String> _sortedLetters = _letters;
-                              _sortedLetters.sort();
+                              //* Check if spaces are to count
+                              if (settings[2].status == false) {
+                                _text = _text.replaceAll(" ", "");
+                              }
+                              //* Check if lower case or not
+                              if (settings[3].status == false) {
+                                _text = _text.toLowerCase();
+                              }
+                              List<String> _lettersForWord = _text.split("");
+
+                              //* Check if text is to sort
+                              if (settings[4].status) {
+                                _lettersForWord.sort();
+                              }
 
                               letters = [];
 
-                              _sortedLetters.forEach((letter) {
+                              _lettersForWord.forEach((letter) {
                                 bool run = true;
 
                                 letters.forEach((letterList) {
@@ -116,13 +136,22 @@ class _HomePageState extends State<HomePage> {
                               });
 
                               //! Calculate words
-                              List<String> _words = text.split(" ");
-                              List<String> _sortedWords = _words;
-                              _sortedLetters.sort();
+                              _text = text;
+
+                              //* Check if all in lowercase or not
+                              if (settings[5].status == false) {
+                                _text = _text.toLowerCase();
+                              }
+
+                              List<String> _words = _text.split(" ");
+
+                              if (settings[6].status) {
+                                _words.sort();
+                              }
 
                               words = [];
 
-                              _sortedWords.forEach((word) {
+                              _words.forEach((word) {
                                 bool run = true;
 
                                 words.forEach((wordsList) {
@@ -185,7 +214,9 @@ class _HomePageState extends State<HomePage> {
                                 _letterBefore = letter;
                               });
 
-                              _countStartWordsList.sort();
+                              if (settings[7].status) {
+                                _countStartWordsList.sort();
+                              }
 
                               _countStartWordsList.forEach((sortWord) {
                                 bool run = true;
@@ -217,18 +248,19 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Positioned(
-                              bottom: 12,
-                              right: 4,
-                              child: RetroIconButton(
-                                tooltip: "Clear text",
-                                icon: Icon(Icons.delete,
-                                    color: theme.accentColor),
-                                onTap: () {
-                                  setState(() {
-                                    textController.text = "";
-                                  });
-                                },
-                              )),
+                            bottom: 12,
+                            right: 4,
+                            child: RetroIconButton(
+                              tooltip: "Clear text",
+                              icon:
+                                  Icon(Icons.delete, color: theme.accentColor),
+                              onTap: () {
+                                setState(() {
+                                  textController.text = "";
+                                });
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),

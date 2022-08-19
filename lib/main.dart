@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:textly/model/setting.dart';
 import 'package:textly/pages/home_page.dart';
+import 'package:textly/services/boxes.dart';
+import 'package:textly/settings.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +13,12 @@ Future main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(SettingAdapter());
   await Hive.openBox<Setting>("settings");
+
+  Box<Setting> _settingsBox = Boxes.getSettingsBox();
+
+  for (int i = 0; i <= settingsLenght; i++) {
+    settings.add(_settingsBox.getAt(i)!);
+  }
 
   runApp(const MyApp());
 }
@@ -34,6 +42,11 @@ class MyApp extends StatelessWidget {
             fontSize: 30,
             fontWeight: FontWeight.w700,
           ),
+          headline2: TextStyle(
+            color: Color(0xFF111717),
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+          ),
           bodyText1: TextStyle(
             color: Color(0xFF3D3D3D),
             fontSize: 15,
@@ -54,6 +67,11 @@ class MyApp extends StatelessWidget {
           headline1: TextStyle(
             color: Color(0xFFFFFFFF),
             fontSize: 30,
+            fontWeight: FontWeight.w700,
+          ),
+          headline2: TextStyle(
+            color: Color(0xFFFFFFFF),
+            fontSize: 24,
             fontWeight: FontWeight.w700,
           ),
           bodyText1: TextStyle(
