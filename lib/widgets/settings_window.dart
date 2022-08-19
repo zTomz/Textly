@@ -7,6 +7,7 @@ import 'package:textly/services/boxes.dart';
 import 'package:textly/settings.dart';
 import 'package:textly/widgets/icon_button.dart';
 import 'package:textly/widgets/toogle_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsWindow extends StatefulWidget {
   final void Function() closeWindowFunc;
@@ -145,6 +146,14 @@ class _SettingsWindowState extends State<SettingsWindow> {
                       children: [
                         settingsWidget(settings[7], 7, width),
                       ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      width: width - 50,
+                      child: Image.asset("assets/img/kofi_button_red.png"),
                     ),
                   ),
                 ],

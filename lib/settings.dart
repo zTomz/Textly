@@ -1,13 +1,13 @@
 import 'package:textly/model/setting.dart';
 
 //* Divided by 1 for list count
-int settingsLenght = 4;
+int settingsLenght = 7;
 
 List<Setting> settings = [];
 
 //! Settings
-/*
-//? Performance
+List<Setting> defaultSettings = [
+  //? Performance
   Setting(
     name: "Show Percentage",
     status: true,
@@ -51,4 +51,4 @@ List<Setting> settings = [];
     status: true,
     lastChange: DateTime.now(),
   ),
-*/
+];

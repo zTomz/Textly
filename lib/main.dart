@@ -16,8 +16,15 @@ Future main() async {
 
   Box<Setting> _settingsBox = Boxes.getSettingsBox();
 
-  for (int i = 0; i <= settingsLenght; i++) {
-    settings.add(_settingsBox.getAt(i)!);
+  if (_settingsBox.isEmpty) {
+    settings = defaultSettings;
+    settings.forEach((setting) {
+      _settingsBox.add(setting);
+    });
+  } else {
+    for (int i = 0; i <= settingsLenght; i++) {
+      settings.add(_settingsBox.getAt(i)!);
+    }
   }
 
   runApp(const MyApp());

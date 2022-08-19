@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
                             // settings
                             //     .forEach((setting) => settingsBox.add(setting));
                             // settingsBox.clear();
+                            // print(settingsBox.values);
                           },
                         )
                       ],
