@@ -5,6 +5,4 @@ Textly is an app wich analyses your text. This means words and letters but also 
 If you have more ideas or a design propocition, please tell me.
 Get in touch: tom.fe3dback@gmail.com
 
-The App Icon is from Flaticon: https://www.flaticon.com/free-icons/text by Freepik
-
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/N4N7EI6B2)
