@@ -16,7 +16,7 @@ Future main() async {
 
   Box<Setting> _settingsBox = Boxes.getSettingsBox();
 
-  if (_settingsBox.isEmpty) {
+  if (_settingsBox.values.isEmpty) {
     settings = defaultSettings;
     settings.forEach((setting) {
       _settingsBox.add(setting);

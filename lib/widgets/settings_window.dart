@@ -149,7 +149,14 @@ class _SettingsWindowState extends State<SettingsWindow> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () async {
+                      // await canLaunch("https://ko-fi.com/ztomz")
+                      //     ? await launch("https://ko-fi.com/ztomz")
+                      //     : throw 'Could not launch https://ko-fi.com/ztomz';
+                      if (!await launchUrl(Uri.parse("https://ko-fi.com/ztomz"))) {
+                        throw 'Could not launch https://ko-fi.com/ztomz';
+                      }
+                    },
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 15),
                       width: width - 50,
@@ -179,7 +186,7 @@ class _SettingsWindowState extends State<SettingsWindow> {
                     lastChange: DateTime.now(),
                   );
                 });
-                settingsBox.putAt(index, setting);
+                settingsBox.putAt(index, settings[index]);
               },
             ),
             const SizedBox(width: 20),

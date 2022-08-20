@@ -25,6 +25,11 @@ class _HomePageState extends State<HomePage> {
   List<List> words = [];
   List<List> sentenceStarts = [];
 
+  //? Sum of Letters, Words, Sentence Starts
+  int sumLetters = 0;
+  int sumWords = 0;
+  int sumSentenceStarts = 0;
+
   bool settingsWindow = false;
 
   //* To add new settings:
@@ -85,6 +90,10 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           TextField(
                             onChanged: (String text) {
+                              sumLetters = 0;
+                              sumWords = 0;
+                              sumSentenceStarts = 0;
+
                               //! Calculate words
                               List<String> _wordsCount = text.split(" ");
 
@@ -92,13 +101,11 @@ class _HomePageState extends State<HomePage> {
                                 _wordsCount.remove("");
                               }
 
-                              setState(() {
-                                wordsCount = _wordsCount.length;
-                              });
                               //! Calculate words
 
                               //! Calculate letters
                               String _text = text;
+                              letters = [];
 
                               //* Check if spaces are to count
                               if (settings[2].status == false) {
@@ -115,29 +122,29 @@ class _HomePageState extends State<HomePage> {
                                 _lettersForWord.sort();
                               }
 
-                              letters = [];
+                              List<List> _lettersToOverride = [];
 
                               _lettersForWord.forEach((letter) {
                                 bool run = true;
 
-                                letters.forEach((letterList) {
+                                _lettersToOverride.forEach((letterList) {
                                   if (letter == letterList[0]) {
-                                    setState(() {
-                                      letterList[1] = letterList[1] + 1;
-                                    });
+                                    letterList[1] = letterList[1] + 1;
+
                                     run = false;
                                   }
                                 });
 
                                 if (run) {
-                                  setState(() {
-                                    letters.add([letter, 1]);
-                                  });
+                                  _lettersToOverride.add([letter, 1]);
                                 }
+
+                                sumLetters += 1;
                               });
 
                               //! Calculate words
                               _text = text;
+                              words = [];
 
                               //* Check if all in lowercase or not
                               if (settings[5].status == false) {
@@ -150,25 +157,24 @@ class _HomePageState extends State<HomePage> {
                                 _words.sort();
                               }
 
-                              words = [];
+                              List<List> _wordsToOverride = [];
 
                               _words.forEach((word) {
                                 bool run = true;
 
-                                words.forEach((wordsList) {
+                                _wordsToOverride.forEach((wordsList) {
                                   if (word == wordsList[0]) {
-                                    setState(() {
-                                      wordsList[1] = wordsList[1] + 1;
-                                    });
+                                    wordsList[1] = wordsList[1] + 1;
+
                                     run = false;
                                   }
                                 });
 
                                 if (run) {
-                                  setState(() {
-                                    words.add([word, 1]);
-                                  });
+                                  _wordsToOverride.add([word, 1]);
                                 }
+
+                                sumWords += 1;
                               });
 
                               //! Calculate sentece starts
@@ -219,23 +225,36 @@ class _HomePageState extends State<HomePage> {
                                 _countStartWordsList.sort();
                               }
 
+                              List<List> _sentenceStartsToOverride = [];
+
                               _countStartWordsList.forEach((sortWord) {
                                 bool run = true;
 
-                                sentenceStarts.forEach((word) {
+                                _sentenceStartsToOverride.forEach((word) {
                                   if (sortWord == word[0]) {
-                                    setState(() {
-                                      word[1] = word[1] + 1;
-                                    });
+                                    word[1] = word[1] + 1;
+
                                     run = false;
                                   }
                                 });
 
                                 if (run) {
-                                  setState(() {
-                                    sentenceStarts.add([sortWord, 1]);
-                                  });
+                                  _sentenceStartsToOverride.add([sortWord, 1]);
                                 }
+
+                                sumSentenceStarts += 1;
+                              });
+
+                              //! Update every widget only here, for better performance
+                              setState(() {
+                                //* Words count
+                                wordsCount = _wordsCount.length;
+                                //* Letters
+                                letters = _lettersToOverride;
+                                //* Words
+                                words = _wordsToOverride;
+                                //* Sentence Starts
+                                sentenceStarts = _sentenceStartsToOverride;
                               });
                             },
                             controller: textController,
@@ -294,14 +313,25 @@ class _HomePageState extends State<HomePage> {
                     ),
                   if (textController.text != "") const SizedBox(height: 20),
                   if (textController.text != "")
-                    DetailListView(title: "Letters", list: letters),
-                  if (textController.text != "") const SizedBox(height: 20),
-                  if (textController.text != "")
-                    DetailListView(title: "Words", list: words),
+                    DetailListView(
+                      title: "Letters",
+                      list: letters,
+                      sum: sumLetters,
+                    ),
                   if (textController.text != "") const SizedBox(height: 20),
                   if (textController.text != "")
                     DetailListView(
-                        title: "Sentence starts", list: sentenceStarts),
+                      title: "Words",
+                      list: words,
+                      sum: sumWords,
+                    ),
+                  if (textController.text != "") const SizedBox(height: 20),
+                  if (textController.text != "")
+                    DetailListView(
+                      title: "Sentence starts",
+                      list: sentenceStarts,
+                      sum: sumSentenceStarts,
+                    ),
                   if (textController.text != "") const SizedBox(height: 90),
                 ],
               ),
