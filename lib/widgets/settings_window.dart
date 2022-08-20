@@ -150,10 +150,8 @@ class _SettingsWindowState extends State<SettingsWindow> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      // await canLaunch("https://ko-fi.com/ztomz")
-                      //     ? await launch("https://ko-fi.com/ztomz")
-                      //     : throw 'Could not launch https://ko-fi.com/ztomz';
-                      if (!await launchUrl(Uri.parse("https://ko-fi.com/ztomz"))) {
+                      if (!await launchUrl(
+                          Uri.parse("https://ko-fi.com/ztomz"))) {
                         throw 'Could not launch https://ko-fi.com/ztomz';
                       }
                     },
@@ -163,6 +161,38 @@ class _SettingsWindowState extends State<SettingsWindow> {
                       child: Image.asset("assets/img/kofi_button_red.png"),
                     ),
                   ),
+                  const SizedBox(height: 7),
+                  GestureDetector(
+                    onTap: () async {
+                      if (!await launchUrl(
+                          Uri.parse("https://github.com/zTomz/Textly"))) {
+                        throw 'Could not launch https://github.com/zTomz/Textly';
+                      }
+                    },
+                    child: Container(
+                      width: width - 50,
+                      height: 50,
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          width: 4,
+                          color: theme.accentColor,
+                        ),
+                      ),
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset("assets/img/github.png"),
+                            const SizedBox(width: 7),
+                            const Text("GitHub"),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

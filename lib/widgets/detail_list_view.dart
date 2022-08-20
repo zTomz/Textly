@@ -268,7 +268,6 @@ class _DetailListViewState extends State<DetailListView> {
     });
 
     values.sort();
-    print(values[values.length - 1]);
     return values[values.length - 1];
   }
 }
