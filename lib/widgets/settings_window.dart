@@ -21,6 +21,8 @@ class SettingsWindow extends StatefulWidget {
 class _SettingsWindowState extends State<SettingsWindow> {
   Box<Setting> settingsBox = Boxes.getSettingsBox();
 
+  bool fullScreen = false;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -30,32 +32,56 @@ class _SettingsWindowState extends State<SettingsWindow> {
     double height = size.height * 0.9 - 50;
 
     return Container(
-      width: size.width * 0.9,
-      height: size.height * 0.9,
+      width: fullScreen ? size.width : size.width * 0.9,
+      height: fullScreen ? size.height : size.height * 0.9,
       margin: EdgeInsets.symmetric(
-          vertical: size.height * 0.05, horizontal: size.width * 0.05),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: theme.accentColor,
-            offset: const Offset(9, 9),
-          ),
-        ],
-        border: Border.all(width: 9, color: theme.accentColor),
-        color: theme.primaryColor,
+        vertical: fullScreen ? 0 : size.height * 0.05,
+        horizontal: fullScreen ? 0 : size.width * 0.05,
       ),
+      decoration: fullScreen
+          ? BoxDecoration(
+              color: theme.primaryColor,
+            )
+          : BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: theme.accentColor,
+                  offset: const Offset(9, 9),
+                ),
+              ],
+              border: Border.all(width: 9, color: theme.accentColor),
+              color: theme.primaryColor,
+            ),
       child: Column(
         children: [
+          if (fullScreen) const SizedBox(height: 30),
           Container(
             width: width,
             margin: const EdgeInsets.only(top: 15),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Settings",
                   style: theme.textTheme.headline1,
                 ),
+                const Spacer(),
+                RetroIconButton(
+                  tooltip: "Full Screen",
+                  icon: Icon(
+                    !fullScreen
+                        ? Icons.fullscreen_rounded
+                        : Icons.fullscreen_exit_outlined,
+                    color: theme.accentColor,
+                  ),
+                  onTap: () {
+                    setState(
+                      () {
+                        fullScreen = !fullScreen;
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(width: 12.5),
                 RetroIconButton(
                   tooltip: "Close / Save",
                   icon: Icon(Icons.close_rounded, color: theme.accentColor),

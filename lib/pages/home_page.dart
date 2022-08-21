@@ -1,5 +1,6 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, avoid_function_literals_in_foreach_calls, deprecated_member_use
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:textly/model/setting.dart';
@@ -89,6 +90,7 @@ class _HomePageState extends State<HomePage> {
                       child: Stack(
                         children: [
                           TextField(
+                            readOnly: settingsWindow,
                             onChanged: (String text) {
                               sumLetters = 0;
                               sumWords = 0;
@@ -146,6 +148,11 @@ class _HomePageState extends State<HomePage> {
                               _text = text;
                               words = [];
 
+                              //? Removing all sentence letters
+                              _text = _text.replaceAll(".", " ");
+                              _text = _text.replaceAll("?", " ");
+                              _text = _text.replaceAll("!", " ");
+
                               //* Check if all in lowercase or not
                               if (settings[5].status == false) {
                                 _text = _text.toLowerCase();
@@ -153,29 +160,29 @@ class _HomePageState extends State<HomePage> {
 
                               List<String> _words = _text.split(" ");
 
+                              //* Check if words have to be sorted
                               if (settings[6].status) {
                                 _words.sort();
                               }
 
                               List<List> _wordsToOverride = [];
 
-                              _words.forEach((word) {
-                                bool run = true;
-
-                                _wordsToOverride.forEach((wordsList) {
+                              for (String word in _words) {
+                                if (word.contains(" ") || word == "") {
+                                  continue;
+                                }
+                              
+                                for (List wordsList in _wordsToOverride) {
                                   if (word == wordsList[0]) {
                                     wordsList[1] = wordsList[1] + 1;
-
-                                    run = false;
+                                    sumWords += 1;
+                                    continue;
                                   }
-                                });
-
-                                if (run) {
-                                  _wordsToOverride.add([word, 1]);
                                 }
 
+                                _wordsToOverride.add([word, 1]);
                                 sumWords += 1;
-                              });
+                              }
 
                               //! Calculate sentece starts
                               sentenceStarts = [];

@@ -1,5 +1,5 @@
 name: textly
-description: A new Flutter project.
+description: Textly analyzes your text and creates beautiful graphs. Textly does not collect usage data and is completely open source.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
