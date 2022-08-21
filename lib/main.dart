@@ -16,13 +16,27 @@ Future main() async {
 
   Box<Setting> _settingsBox = Boxes.getSettingsBox();
 
-  if (_settingsBox.values.isEmpty) {
+  bool upToDate = true;
+  int i = 0;
+
+  for (Setting setting in defaultSettings) {
+    Setting? currentSetting = _settingsBox.getAt(i);
+
+    if (currentSetting == null || currentSetting.name != setting.name) {
+      upToDate = false;
+      break;
+    }
+    i += 1;
+  }
+
+  if (upToDate == false) {
+    _settingsBox.clear();
     settings = defaultSettings;
-    settings.forEach((setting) {
+    for (Setting setting in defaultSettings) {
       _settingsBox.add(setting);
-    });
+    }
   } else {
-    for (int i = 0; i <= settingsLenght; i++) {
+    for (int i = 0; i <= defaultSettings.length - 1; i++) {
       settings.add(_settingsBox.getAt(i)!);
     }
   }

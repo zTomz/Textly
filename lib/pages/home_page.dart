@@ -10,6 +10,7 @@ import 'package:textly/widgets/detail_list_view.dart';
 import 'package:textly/widgets/detail_widget.dart';
 import 'package:textly/widgets/icon_button.dart';
 import 'package:textly/widgets/settings_window.dart';
+import 'package:textly/widgets/two_information_box.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   List<List> letters = [];
   List<List> words = [];
   List<List> sentenceStarts = [];
+  List<int> sentenceLenghts = [];
 
   //? Sum of Letters, Words, Sentence Starts
   int sumLetters = 0;
@@ -103,24 +105,38 @@ class _HomePageState extends State<HomePage> {
                                 _wordsCount.remove("");
                               }
 
-                              //! Calculate words
+                              //! Calculate average sentence lenght
+                              //* Check if sentence lenght is wanted
+                              if (settings[2].status) {
+                                int _sentenceLenght = 0;
+                                sentenceLenghts = [];
+
+                                for (String c in text.split("")) {
+                                  if (c == "." || c == "?" || c == "!") {
+                                    sentenceLenghts.add(_sentenceLenght);
+                                    _sentenceLenght = 0;
+                                    continue;
+                                  }
+                                  _sentenceLenght += 1;
+                                }
+                              }
 
                               //! Calculate letters
                               String _text = text;
                               letters = [];
 
                               //* Check if spaces are to count
-                              if (settings[2].status == false) {
+                              if (settings[3].status == false) {
                                 _text = _text.replaceAll(" ", "");
                               }
                               //* Check if lower case or not
-                              if (settings[3].status == false) {
+                              if (settings[4].status == false) {
                                 _text = _text.toLowerCase();
                               }
                               List<String> _lettersForWord = _text.split("");
 
                               //* Check if text is to sort
-                              if (settings[4].status) {
+                              if (settings[5].status) {
                                 _lettersForWord.sort();
                               }
 
@@ -154,14 +170,14 @@ class _HomePageState extends State<HomePage> {
                               _text = _text.replaceAll("!", " ");
 
                               //* Check if all in lowercase or not
-                              if (settings[5].status == false) {
+                              if (settings[6].status == false) {
                                 _text = _text.toLowerCase();
                               }
 
                               List<String> _words = _text.split(" ");
 
                               //* Check if words have to be sorted
-                              if (settings[6].status) {
+                              if (settings[7].status) {
                                 _words.sort();
                               }
 
@@ -171,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                                 if (word.contains(" ") || word == "") {
                                   continue;
                                 }
-                              
+
                                 for (List wordsList in _wordsToOverride) {
                                   if (word == wordsList[0]) {
                                     wordsList[1] = wordsList[1] + 1;
@@ -228,7 +244,7 @@ class _HomePageState extends State<HomePage> {
                                 _letterBefore = letter;
                               });
 
-                              if (settings[7].status) {
+                              if (settings[8].status) {
                                 _countStartWordsList.sort();
                               }
 
@@ -318,6 +334,20 @@ class _HomePageState extends State<HomePage> {
                       count: textController.text.length.toString(),
                       title: "Characters",
                     ),
+                  if (textController.text != "" && settings[2].status)
+                    const SizedBox(height: 20),
+                  if (textController.text != "" && settings[2].status)
+                    TwoInformationBox(
+                      title: "Sentence lenghts",
+                      info1: [
+                        calculateAverrage(sentenceLenghts).toStringAsFixed(2),
+                        "Average length"
+                      ],
+                      info2: [
+                        getLongestSentence(sentenceLenghts).toString(),
+                        "Longest"
+                      ],
+                    ),
                   if (textController.text != "") const SizedBox(height: 20),
                   if (textController.text != "")
                     DetailListView(
@@ -355,5 +385,26 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  double calculateAverrage(List<int> list) {
+    int sum = 0;
+    for (int num in list) {
+      sum += num;
+    }
+
+    return sum / list.length;
+  }
+
+  int getLongestSentence(List<int> list) {
+    int highestNum = 0;
+
+    for (int num in list) {
+      if (num > highestNum) {
+        highestNum = num;
+      }
+    }
+
+    return highestNum;
   }
 }

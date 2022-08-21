@@ -1,8 +1,5 @@
 import 'package:textly/model/setting.dart';
 
-//* Divided by 1 for list count
-int settingsLenght = 7;
-
 List<Setting> settings = [];
 
 //! Settings
@@ -15,6 +12,12 @@ List<Setting> defaultSettings = [
   ),
   Setting(
     name: "Show Diagrams",
+    status: true,
+    lastChange: DateTime.now(),
+  ),
+  //? Sentence lenght
+  Setting(
+    name: "Calculate sentence lenght",
     status: true,
     lastChange: DateTime.now(),
   ),

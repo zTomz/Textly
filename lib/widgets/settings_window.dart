@@ -111,9 +111,11 @@ class _SettingsWindowState extends State<SettingsWindow> {
                       children: [
                         settingsWidget(settings[0], 0, width),
                         settingsWidget(settings[1], 1, width),
+                         settingsWidget(settings[2], 2, width),
                       ],
                     ),
                   ),
+                  
                   //! Letters
                   Container(
                     width: width,
@@ -129,9 +131,9 @@ class _SettingsWindowState extends State<SettingsWindow> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        settingsWidget(settings[2], 2, width),
                         settingsWidget(settings[3], 3, width),
                         settingsWidget(settings[4], 4, width),
+                        settingsWidget(settings[5], 5, width),
                       ],
                     ),
                   ),
@@ -150,8 +152,8 @@ class _SettingsWindowState extends State<SettingsWindow> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        settingsWidget(settings[5], 5, width),
                         settingsWidget(settings[6], 6, width),
+                        settingsWidget(settings[7], 7, width),
                       ],
                     ),
                   ),
@@ -170,7 +172,7 @@ class _SettingsWindowState extends State<SettingsWindow> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        settingsWidget(settings[7], 7, width),
+                        settingsWidget(settings[8], 8, width),
                       ],
                     ),
                   ),
