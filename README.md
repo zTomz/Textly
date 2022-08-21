@@ -2,6 +2,8 @@
 
 Textly is an app that analyzes your text. That means words and letters, but also how often you use a certain letter in the text and with which words your sentences start. You get graphs displayed to have everything a bit more visual. Also, you can customize the whole app the way you want in the settings.
 
+Textly is now open for the web. Visit https://ztomz.github.io/Textly/ to use Textly without installing something.
+
 If you have more ideas or a design propocition, please tell me.
 
 Get in touch: tom.fe3dback@gmail.com!
