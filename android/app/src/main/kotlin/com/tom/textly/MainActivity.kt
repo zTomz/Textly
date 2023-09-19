@@ -1,4 +1,4 @@
-package com.example.textly
+package com.tom.textly
 
 import io.flutter.embedding.android.FlutterActivity
 
