@@ -17,11 +17,7 @@ class _HomePageState extends State<HomePage> {
   int sentenceCount = 0;
 
   Map<String, double> characters = {};
-
-  //? Sum of Letters, Words, Sentence Starts
-  int sumLetters = 0;
-  int sumWords = 0;
-  int sumSentenceStarts = 0;
+  Map<String, double> words = {};
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +41,25 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (value) {
                   // Words count
                   // ignore: no_leading_underscores_for_local_identifiers
-                  List<String> _wordsCount = value.split(" ");
+                  wordsCount = 0;
+                  for (String word in value.split(" ")) {
+                    if (word.isEmpty) {
+                      continue;
+                    }
 
-                  while (_wordsCount.remove("")) {
-                    _wordsCount.remove("");
+                    word = word
+                        .replaceAll(".", "")
+                        .replaceAll("!", "")
+                        .replaceAll("?", "")
+                        .replaceAll(",", "");
+
+                    wordsCount += 1;
+
+                    if (words.containsKey(word)) {
+                      words[word] = words[word]! + 1;
+                    } else {
+                      words[word] = 1;
+                    }
                   }
 
                   // Average sentence length
@@ -66,6 +77,7 @@ class _HomePageState extends State<HomePage> {
                     final character = value[i].toUpperCase();
 
                     if (character == " ") {
+                      _chractersList.add('" "');
                       continue;
                     }
 
@@ -85,7 +97,7 @@ class _HomePageState extends State<HomePage> {
 
                   setState(() {
                     // Words count
-                    wordsCount = _wordsCount.length;
+                    wordsCount = wordsCount;
 
                     // Average sentence length
                     sentenceCount = _sentenceCount;
@@ -134,10 +146,26 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) => DetailWidget(
                     margin: const EdgeInsets.only(top: 10),
                     value: characters.entries.elementAt(index).key,
-                    title: characters.entries.elementAt(index).value.toString(),
+                    title: characters.entries
+                        .elementAt(index)
+                        .value
+                        .toStringAsFixed(0),
                   ),
                   itemCount: characters.length,
                   data: characters,
+                ),
+              const SizedBox(height: 15),
+              if (textController.text != "")
+                BigDetailWidget(
+                  title: "Words",
+                  itemBuilder: (context, index) => DetailWidget(
+                    margin: const EdgeInsets.only(top: 10),
+                    value: words.entries.elementAt(index).key,
+                    title:
+                        words.entries.elementAt(index).value.toStringAsFixed(0),
+                  ),
+                  itemCount: words.length,
+                  data: words,
                 ),
               if (textController.text != "") const SizedBox(height: 90),
             ],

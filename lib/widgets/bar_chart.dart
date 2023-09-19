@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class BarChart extends StatelessWidget {
@@ -38,32 +37,35 @@ class BarChart extends StatelessWidget {
               child: ListView.builder(
                 itemCount: data.length,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 15),
-                        width: 30,
-                        height: constraints.maxHeight *
-                                (data.values.elementAt(index) / largestValue) -
-                            1,
-                        alignment: Alignment.bottomCenter,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                          border: Border.all(
-                            color: theme.colorScheme.inversePrimary,
-                            width: 2,
-                          ),
-                          color: theme.colorScheme.surfaceVariant,
+                itemBuilder: (context, index) => Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 15),
+                      width: 30,
+                      height: constraints.maxHeight *
+                              (data.values.elementAt(index) / largestValue) -
+                          1,
+                      alignment: Alignment.bottomCenter,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(20),
                         ),
-                        child: Text(data.keys.elementAt(index)),
+                        border: Border.all(
+                          color: theme.colorScheme.inversePrimary,
+                          width: 2,
+                        ),
+                        color: theme.colorScheme.surfaceVariant,
                       ),
-                    ],
-                  );
-                },
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 15),
+                      width: 30,
+                      alignment: Alignment.bottomCenter,
+                      child: Text(data.keys.elementAt(index)),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
