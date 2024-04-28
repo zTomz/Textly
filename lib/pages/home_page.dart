@@ -42,6 +42,7 @@ class _HomePageState extends State<HomePage> {
                   // Words count
                   // ignore: no_leading_underscores_for_local_identifiers
                   wordsCount = 0;
+                  words = {};
                   for (String word in value.split(" ")) {
                     if (word.isEmpty) {
                       continue;
